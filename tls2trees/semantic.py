@@ -11,8 +11,7 @@ import resource
 from tls2trees.fsct.other_parameters import other_parameters
 from tls2trees.fsct.preprocessing import Preprocessing
 from tls2trees.fsct.inference import SemanticSegmentation
-from tls2trees.fsct.segmentation import Segmentation
-from tls2trees.tools import dict2class
+
 
 if __name__ == '__main__':
     
