@@ -101,7 +101,7 @@ if __name__ == '__main__':
         pickle.dump(params, open(os.path.join(params.odir, f'{params.basename}.params.pickle'), 'wb'))
 
     if params.step >= 1 and not params.steps_completed[1]:
-        pc_files = [file for file in Path(params.working_dir) if file.suffix == ".npy"]
+        pc_files = [file for file in Path(params.working_dir).iterdir() if file.suffix == ".npy"]
         if len(pc_files) > 0:
             params = SemanticSegmentation(params)
             params.steps_completed[1] = True
