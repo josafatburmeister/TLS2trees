@@ -3,6 +3,7 @@ start = datetime.now()
 
 import sys
 import os
+from pathlib import Path
 import argparse
 import pickle
 import resource
@@ -100,10 +101,11 @@ if __name__ == '__main__':
         pickle.dump(params, open(os.path.join(params.odir, f'{params.basename}.params.pickle'), 'wb'))
 
     if params.step >= 1 and not params.steps_completed[1]:
-
-        params = SemanticSegmentation(params)
-        params.steps_completed[1] = True
-        pickle.dump(params, open(os.path.join(params.odir, f'{params.basename}.params.pickle'), 'wb'))
-    
+        pc_files = [file for file in Path(params.working_dir) if file.suffix == ".npy"]
+        if len(pc_files) > 0:
+            params = SemanticSegmentation(params)
+            params.steps_completed[1] = True
+            pickle.dump(params, open(os.path.join(params.odir, f'{params.basename}.params.pickle'), 'wb'))
+        
     if params.verbose: print(f'runtime: {(datetime.now() - start).seconds}')
     if params.verbose: print(f'peak memory: {resource.getrusage(resource.RUSAGE_SELF).ru_maxrss / 1e6}')
