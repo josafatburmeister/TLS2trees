@@ -56,7 +56,7 @@ def Preprocessing(params):
         for col in ['x', 'y', 'z']: tile_index[col] = tile_index[col].astype(float)
 
         # locate 8 nearest tiles
-        nn = NearestNeighbors(n_neighbors=9).fit(tile_index[['x', 'y']])
+        nn = NearestNeighbors(n_neighbors=min(9, len(tile_index))).fit(tile_index[['x', 'y']])
         distance, neighbours = nn.kneighbors(tile_index.loc[tile_index.fname == params.tile][['x', 'y']], 
                                    return_distance=True)
         neighbours = neighbours[np.where(distance <= params.max_distance_between_tiles)]
