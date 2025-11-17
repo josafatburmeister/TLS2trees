@@ -220,7 +220,6 @@ if __name__ == '__main__':
             break
         if params.pandarallel:
             chull = grouped.parallel_apply(cube) # parallel_apply only works witn pd < 1.3
-            print(chull)
         else:
             chull = grouped.apply(cube) # don't think works with Jasmin or parallel_apply only works witn pd < 1.3
         chull = chull.reset_index(drop=True) 
