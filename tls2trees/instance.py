@@ -26,7 +26,7 @@ def generate_path(samples, origins, n_neighbours=200, max_length=0):
     if len(origins) == 0:
         return pd.DataFrame([], columns=['clstr', 'distance', 't_clstr', 'is_tip'])
 
-    n_neighbours = min(n_neighbours, len(samples))
+    n_neighbours = min(n_neighbours, len(samples) - 1)
     # compute nearest neighbours for each vertex in cluster convex hull
     nn = NearestNeighbors(n_neighbors=n_neighbours).fit(samples[['x', 'y', 'z']])
     distances, indices = nn.kneighbors()    
@@ -239,7 +239,7 @@ if __name__ == '__main__':
         if len(dbh_slice) > 0:
 
             # remove noise from dbh slice
-            nn = NearestNeighbors(n_neighbors=min(10, len(dbh_slice))).fit(dbh_slice[xyz])
+            nn = NearestNeighbors(n_neighbors=min(10, len(dbh_slice) - 1)).fit(dbh_slice[xyz])
             distances, indices = nn.kneighbors()
             dbh_slice.loc[:, 'nn'] = distances[:, 1:].mean(axis=1)
             dbh_slice = dbh_slice.loc[dbh_slice.nn < dbh_slice.nn.quantile(q=.9)]
@@ -393,7 +393,7 @@ if __name__ == '__main__':
         branch_and_leaves.reset_index(inplace=True, drop=True)
 
         # find neighbouring branch and leaf points - used as entry points
-        nn = NearestNeighbors(n_neighbors=min(2, len(branch_and_leaves))).fit(branch_and_leaves[xyz])
+        nn = NearestNeighbors(n_neighbors=min(2, len(branch_and_leaves) - 1)).fit(branch_and_leaves[xyz])
         distances, indices = nn.kneighbors()   
         closest_point_to_leaf = indices[:len(cnrs), :].flatten() # only leaf points
         idx = np.isin(closest_point_to_leaf, branch_and_leaves.loc[branch_and_leaves.xlabel == 2].index)
